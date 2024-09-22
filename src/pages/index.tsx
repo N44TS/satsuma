@@ -9,8 +9,8 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>BIMA Merchant Savings Widget</title>
-        <meta name="description" content="BIMA Merchant Savings Widget Demo" />
+        <title>Satsuma Merchant Loyalty Widget</title>
+        <meta name="description" content="Accept USBD and offer user store credit" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
       </nav>
 
       <main className={styles.main}>
-        <h1>Welcome to BIMA Merchant Savings</h1>
+        <h1>Welcome to Satsuma</h1>
         <MockStorefront />
       </main>
     </div>

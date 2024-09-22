@@ -13,6 +13,7 @@ const MockStorefront: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [purchaseSuccess, setPurchaseSuccess] = useState(false);
   const [savingsSelection, setSavingsSelection] = useState<Record<number, boolean>>({});
+  const [purchaseStatus, setPurchaseStatus] = useState('');
 
   const handlePurchase = async (productId: number, price: number) => {
     if (!isConnected || !publicClient || !walletClient || !address) {
@@ -22,6 +23,7 @@ const MockStorefront: React.FC = () => {
   
     setIsLoading(true);
     try {
+      setPurchaseStatus('Approving token spend...');
       console.log('Fetching merchant address...');
       const merchantAddress = await getMerchantAddress();
       console.log('Merchant address:', merchantAddress);
@@ -30,6 +32,7 @@ const MockStorefront: React.FC = () => {
       }
   
       const amountInUSDC = BigInt(price) * BigInt(1e18);
+      setPurchaseStatus('Purchase in progress...');
       await purchaseAndDeposit(publicClient, walletClient, amountInUSDC, savingsSelection[productId] || false, merchantAddress);
       
       setPurchaseSuccess(true);
@@ -41,6 +44,7 @@ const MockStorefront: React.FC = () => {
       alert('Purchase failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setIsLoading(false);
+      setPurchaseStatus('');
     }
   };
 
@@ -54,6 +58,7 @@ const MockStorefront: React.FC = () => {
       {isLoading && (
         <div className="spinnerOverlay">
           <div className="spinner"></div>
+          {purchaseStatus && <p>{purchaseStatus}</p>}
         </div>
       )}
       {purchaseSuccess && (

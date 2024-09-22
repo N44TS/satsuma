@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import contractABI from './ABI/maincontract2.json';
 import { PublicClient, WalletClient } from 'viem';
 import axios from 'axios';
+import { parseEther, parseUnits } from 'viem';
 
 const CONTRACT_ADDRESS = '0xCF14fF742f461f9CD280b60a166cA66F243370b1';
 const DEBT_TOKEN_ADDRESS = '0xcFd7Fc6D664FFcc2FC74b68C321ECd6a400d2118'; 
@@ -151,4 +152,12 @@ export const getUserPurchases = async (
         transactionHash
       };
     });
+};
+
+// function for user to withdraw their 'savings' stake
+export const withdrawSavings = async (publicClient: any, walletClient: any, amount: string) => {
+  const contract = await getEthersContract(publicClient, walletClient);
+  const amountInTokenUnits = parseUnits(amount, 18); // Assuming USBD has 18 decimals
+  const tx = await contract.withdrawSavings(amountInTokenUnits);
+  await tx.wait();
 };

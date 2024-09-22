@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
-import { getUserStake, getUserLoyaltyPoints, getUserPurchases, Purchase, getEthersContract } from '../utils/contractInteractions';
+import { getUserStake, getUserLoyaltyPoints, getUserPurchases, Purchase, getEthersContract, withdrawSavings } from '../utils/contractInteractions';
 
 const UserDashboard: React.FC = () => {
   const { address } = useAccount();
@@ -9,6 +9,20 @@ const UserDashboard: React.FC = () => {
   const [stake, setStake] = useState('0');
   const [loyaltyPoints, setLoyaltyPoints] = useState('0');
   const [purchases, setPurchases] = useState<Purchase[]>([]);
+
+  const handleWithdraw = async () => {
+    if (publicClient && walletClient && address) {
+      try {
+        await withdrawSavings(publicClient, walletClient, stake);
+        // Refresh user data after withdrawal
+        const userStake = await getUserStake(publicClient, walletClient, address);
+        setStake(userStake);
+      } catch (error) {
+        console.error('Withdrawal failed:', error);
+        alert('Withdrawal failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -56,6 +70,7 @@ const UserDashboard: React.FC = () => {
     <div>
       <h2>User Dashboard</h2>
       <p>Your stake: {stake} USBD</p>
+      <button onClick={handleWithdraw}>Withdraw Stake</button>
       <p>Your loyalty points: {loyaltyPoints}</p>
       <h3>Your Purchases</h3>
       <table>
