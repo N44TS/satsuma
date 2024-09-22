@@ -27,6 +27,7 @@ export const purchaseAndDeposit = async (
   publicClient: PublicClient,
   walletClient: WalletClient,
   amount: bigint,
+  savePercentage: boolean,
   merchantAddress: string
 ) => {
   const contract = await getEthersContract(publicClient, walletClient);
@@ -52,8 +53,7 @@ export const purchaseAndDeposit = async (
       console.log('Token spend approved');
     }
 
-    // Now proceed with the purchase
-    const tx = await contract.purchaseAndDeposit(amount, false, merchantAddress);
+    const tx = await contract.purchaseAndDeposit(amount, savePercentage, merchantAddress);
     console.log('Transaction sent:', tx.hash);
     await tx.wait();
     console.log('Purchase completed');
@@ -120,4 +120,35 @@ export const getMerchantAddress = async (): Promise<string | null> => {
     }
     throw error;
   }
+};
+
+// Define the Purchase interface here
+export interface Purchase {
+  storefront: string;
+  amount: string;
+  savings: string;
+  blockNumber: number;
+  transactionHash: string;
+}
+
+export const getUserPurchases = async (
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+  userAddress: string
+): Promise<Purchase[]> => {
+  const contract = await getEthersContract(publicClient, walletClient);
+  const filter = contract.filters.Purchase(userAddress);
+  const events = await contract.queryFilter(filter);
+  return events
+    .filter((event): event is ethers.EventLog => event instanceof ethers.EventLog)
+    .map(event => {
+      const { args, blockNumber, transactionHash } = event;
+      return {
+        storefront: args.storefront,
+        amount: ethers.formatUnits(args.amount, 18),
+        savings: ethers.formatUnits(args.savings, 18),
+        blockNumber,
+        transactionHash
+      };
+    });
 };
