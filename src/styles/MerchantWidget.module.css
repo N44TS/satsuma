@@ -1,0 +1,87 @@
+.widget {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .title {
+    text-align: center;
+    color: #333;
+  }
+  
+  .productInfo {
+    margin-top: 20px;
+  }
+  
+  .priceInput input {
+    width: 80px;
+    margin-left: 5px;
+  }
+  
+  .savingsOption {
+    margin: 10px 0;
+  }
+  
+  .totalAmount {
+    font-weight: bold;
+  }
+  
+  .buyButton {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .buyButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .userInfo {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #eaeaea;
+  }
+  
+  @media (max-width: 600px) {
+    .widget {
+      max-width: 100%;
+      padding: 10px;
+    }
+  }
+  
+  .savingsHistory {
+    margin-top: 20px;
+    border-top: 1px solid #eaeaea;
+    padding-top: 10px;
+  }
+
+  .savingsHistory h4 {
+    margin-bottom: 10px;
+  }
+
+  .savingsHistory ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .savingsHistory li {
+    margin-bottom: 5px;
+  }
+
+  .buyButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
