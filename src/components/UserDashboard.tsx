@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
+import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi';
 import { getUserStake, getUserLoyaltyPoints, getUserPurchases, Purchase, getEthersContract, withdrawSavings } from '../utils/contractInteractions';
 
 const UserDashboard: React.FC = () => {
   const { address } = useAccount();
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
+  const chainId = useChainId();
   const [stake, setStake] = useState('0');
   const [loyaltyPoints, setLoyaltyPoints] = useState('0');
   const [purchases, setPurchases] = useState<Purchase[]>([]);
 
   const handleWithdraw = async () => {
-    if (publicClient && walletClient && address) {
+    if (publicClient && walletClient && address && chainId) {
       try {
-        await withdrawSavings(publicClient, walletClient, stake);
+        await withdrawSavings(publicClient, walletClient, stake, chainId);
         // Refresh user data after withdrawal
-        const userStake = await getUserStake(publicClient, walletClient, address);
+        const userStake = await getUserStake(publicClient, walletClient, address, chainId);
         setStake(userStake);
       } catch (error) {
         console.error('Withdrawal failed:', error);
@@ -26,10 +27,10 @@ const UserDashboard: React.FC = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (publicClient && walletClient && address) {
-        const userStake = await getUserStake(publicClient, walletClient, address);
-        const userPoints = await getUserLoyaltyPoints(publicClient, walletClient, address);
-        const userPurchases = await getUserPurchases(publicClient, walletClient, address);
+      if (publicClient && walletClient && address && chainId) {
+        const userStake = await getUserStake(publicClient, walletClient, address, chainId);
+        const userPoints = await getUserLoyaltyPoints(publicClient, walletClient, address, chainId);
+        const userPurchases = await getUserPurchases(publicClient, walletClient, address, chainId);
         setStake(userStake);
         setLoyaltyPoints(userPoints);
         setPurchases(userPurchases);
@@ -39,8 +40,8 @@ const UserDashboard: React.FC = () => {
     fetchUserData();
 
     const setupEventListeners = async () => {
-      if (publicClient && walletClient && address) {
-        const contract = await getEthersContract(publicClient, walletClient);
+      if (publicClient && walletClient && address && chainId) {
+        const contract = await getEthersContract(publicClient, walletClient, chainId);
 
         contract.on('Purchase', (user: string, storefront: string, amount: bigint, savings: bigint) => {
           if (user === address) {
@@ -64,7 +65,7 @@ const UserDashboard: React.FC = () => {
     };
 
     setupEventListeners();
-  }, [publicClient, walletClient, address]);
+  }, [publicClient, walletClient, address, chainId]);
 
   return (
     <div>

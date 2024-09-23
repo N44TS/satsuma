@@ -9,7 +9,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Satsuma Merchant Loyalty Widget</title>
+        <title>Satsuma Loyalty Widget</title>
         <meta name="description" content="Accept USBD and offer user store credit" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

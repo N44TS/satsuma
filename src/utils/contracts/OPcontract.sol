@@ -32,14 +32,14 @@ contract MerchantSavingsContract is Ownable {
 
     mapping(address => uint256) public lastClaimedReward;
 
-    // Events for various contract actions
-    event Purchase(address indexed user, address indexed storefront, uint256 amount, uint256 savings);
-    event Withdrawal(address indexed user, uint256 amount);
-    event PointsRedeemed(address indexed user, address indexed storefront, uint256 points);
-    event RewardsClaimed(address indexed merchant, uint256 amount);
-    event LoyaltyPointsDistributed(address indexed user, address indexed merchant, uint256 points);
-    event MerchantRegistered(address indexed storefront, address indexed merchantAddress);
-    event MerchantDeactivated(address indexed storefront);
+    // Events 
+    event Purchase(address indexed user, address indexed storefront, uint256 amount, uint256 savings, uint256 chainId);
+    event Withdrawal(address indexed user, uint256 amount, uint256 chainId);
+    event RewardsClaimed(address indexed merchant, uint256 amount, uint256 chainId);
+    event LoyaltyPointsDistributed(address indexed user, address indexed merchant, uint256 points, uint256 chainId);
+    event MerchantRegistered(address indexed storefront, address indexed merchantAddress, uint256 chainId);
+    event MerchantDeactivated(address indexed storefront, uint256 chainId);
+    event PointsRedeemed(address indexed user, address indexed storefront, uint256 points, uint256 chainId);
 
     constructor(address _stabilityPoolAddress) Ownable(msg.sender) {
         stabilityPool = IStabilityPool(_stabilityPoolAddress);
@@ -69,7 +69,7 @@ contract MerchantSavingsContract is Ownable {
             totalDeposits += savings;
         }
 
-        emit Purchase(msg.sender, storefront, amount, savings);
+        emit Purchase(msg.sender, storefront, amount, savings, block.chainid);
     }
 
     // Function for users to withdraw their savings
@@ -79,7 +79,7 @@ contract MerchantSavingsContract is Ownable {
         require(debtToken.transfer(msg.sender, amount), "Transfer failed");
         userDeposits[msg.sender] -= amount;
         totalDeposits -= amount;
-        emit Withdrawal(msg.sender, amount);
+        emit Withdrawal(msg.sender, amount, block.chainid);
     }
 
     // Function for users to redeem their loyalty points
@@ -92,7 +92,7 @@ contract MerchantSavingsContract is Ownable {
         // Transfer the equivalent amount of debtToken to the merchant
         require(debtToken.transfer(merchantAddresses[storefront], points), "Transfer failed");
         
-        emit PointsRedeemed(msg.sender, storefront, points);
+        emit PointsRedeemed(msg.sender, storefront, points, block.chainid);
     }
 
     // Internal function to update the reward rate
@@ -109,7 +109,7 @@ contract MerchantSavingsContract is Ownable {
         uint256 reward = (userDeposit * rewardRate * (block.timestamp - lastUpdateTime)) / (1e18 * 1 days);
         loyaltyPoints[msg.sender] += reward;
         
-        emit LoyaltyPointsDistributed(msg.sender, address(0), reward);
+        emit LoyaltyPointsDistributed(msg.sender, address(0), reward, block.chainid);
     }
 
     // View function to get a user's loyalty points
@@ -123,18 +123,18 @@ contract MerchantSavingsContract is Ownable {
     }
 
     // Function for the owner to register a new merchant
-    function registerMerchant(address storefront) external onlyOwner { //SHOULD REMOVE ONLY OWNER SO ANYONE CAN REGISTER!!
+    function registerMerchant(address storefront) external {
         require(!activeMerchants[storefront], "Storefront already registered");
         merchantAddresses[storefront] = msg.sender;
         activeMerchants[storefront] = true;
-        emit MerchantRegistered(storefront, msg.sender);
+        emit MerchantRegistered(storefront, msg.sender, block.chainid);
     }
 
     // Function for the owner to deactivate a merchant
     function deactivateMerchant(address storefront) external onlyOwner {
         require(activeMerchants[storefront], "Storefront not active");
         activeMerchants[storefront] = false;
-        emit MerchantDeactivated(storefront);
+        emit MerchantDeactivated(storefront, block.chainid);
     }
 
     // View function to get a user's stake (deposit)
@@ -165,7 +165,7 @@ contract MerchantSavingsContract is Ownable {
                 lastClaimedReward[lastProcessedAddress] = totalRewards;
                 totalDistributed += userReward;
                 
-                emit LoyaltyPointsDistributed(lastProcessedAddress, msg.sender, userReward);
+                emit LoyaltyPointsDistributed(lastProcessedAddress, msg.sender, userReward, block.chainid);
                 processed++;
             }
         }
@@ -174,8 +174,8 @@ contract MerchantSavingsContract is Ownable {
         uint256 merchantReward = rewardAmount - totalDistributed;
         require(debtToken.transfer(msg.sender, merchantReward), "Reward transfer failed");
         
-        emit RewardsClaimed(msg.sender, rewardAmount);
-        emit LoyaltyPointsDistributed(address(0), msg.sender, totalDistributed);
+        emit RewardsClaimed(msg.sender, rewardAmount, block.chainid);
+        emit LoyaltyPointsDistributed(address(0), msg.sender, totalDistributed, block.chainid);
     }
 
     // Internal function to get the next address in the userDeposits mapping

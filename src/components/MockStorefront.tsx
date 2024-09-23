@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { MERCHANT_CONFIG } from '../merchantConfig';
-import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
+import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi';
 import { purchaseAndDeposit, getMerchantAddress } from '../utils/contractInteractions';
 import { parseEther } from 'viem';
 
@@ -10,13 +10,14 @@ const MockStorefront: React.FC = () => {
   const { address, isConnected } = useAccount();
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
+  const chainId = useChainId();
   const [isLoading, setIsLoading] = useState(false);
   const [purchaseSuccess, setPurchaseSuccess] = useState(false);
   const [savingsSelection, setSavingsSelection] = useState<Record<number, boolean>>({});
   const [purchaseStatus, setPurchaseStatus] = useState('');
 
   const handlePurchase = async (productId: number, price: number) => {
-    if (!isConnected || !publicClient || !walletClient || !address) {
+    if (!isConnected || !publicClient || !walletClient || !address || !chainId) {
       alert('Please connect your wallet first');
       return;
     }
@@ -33,7 +34,7 @@ const MockStorefront: React.FC = () => {
   
       const amountInUSDC = BigInt(price) * BigInt(1e18);
       setPurchaseStatus('Purchase in progress...');
-      await purchaseAndDeposit(publicClient, walletClient, amountInUSDC, savingsSelection[productId] || false, merchantAddress);
+      await purchaseAndDeposit(publicClient, walletClient, amountInUSDC, savingsSelection[productId] || false, merchantAddress, chainId);
       
       setPurchaseSuccess(true);
       setTimeout(() => {

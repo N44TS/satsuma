@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
+import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi';
 import { 
   registerMerchant, 
   getEthersContract, 
@@ -11,12 +11,13 @@ const MerchantDashboard: React.FC = () => {
   const { address } = useAccount();
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
+  const chainId = useChainId();
   const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     const checkRegistrationStatus = async () => {
-      if (publicClient && walletClient && address) {
-        const contract = await getEthersContract(publicClient, walletClient);
+      if (publicClient && walletClient && address && chainId) {
+        const contract = await getEthersContract(publicClient, walletClient, chainId);
         const status = await contract.activeMerchants(address);
         setIsRegistered(status);
         
@@ -28,13 +29,13 @@ const MerchantDashboard: React.FC = () => {
       }
     };
     checkRegistrationStatus();
-  }, [publicClient, walletClient, address]);
+  }, [publicClient, walletClient, address, chainId]);
 
   const handleRegister = async () => {
-    if (publicClient && walletClient && address) {
+    if (publicClient && walletClient && address && chainId) {
       try {
         console.log('Registering merchant...');
-        await registerMerchant(publicClient, walletClient, address);
+        await registerMerchant(publicClient, walletClient, address, chainId);
         setIsRegistered(true);
         console.log('Merchant registered successfully');
         alert('Merchant registered successfully!');
@@ -46,9 +47,9 @@ const MerchantDashboard: React.FC = () => {
   };
 
   const handleDistributeRewards = async () => {
-    if (publicClient && walletClient && address) {
+    if (publicClient && walletClient && address && chainId) {
       try {
-        await distributeRewards(publicClient, walletClient);
+        await distributeRewards(publicClient, walletClient, chainId);
         alert('Rewards distributed successfully!');
       } catch (error) {
         console.error('Failed to distribute rewards:', error);
