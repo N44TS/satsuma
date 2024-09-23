@@ -4,6 +4,7 @@ import { MERCHANT_CONFIG } from '../merchantConfig';
 import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi';
 import { purchaseAndDeposit, getMerchantAddress } from '../utils/contractInteractions';
 import { parseEther } from 'viem';
+import Image from 'next/image';
 
 const MockStorefront: React.FC = () => {
   const router = useRouter();
@@ -55,23 +56,12 @@ const MockStorefront: React.FC = () => {
 
   return (
     <div className="storefront">
-      <h2>{MERCHANT_CONFIG.storeName}</h2>
-      {isLoading && (
-        <div className="spinnerOverlay">
-          <div className="spinner"></div>
-          {purchaseStatus && <p>{purchaseStatus}</p>}
-        </div>
-      )}
-      {purchaseSuccess && (
-        <div className="successMessage">
-          Purchase successful! Redirecting...
-        </div>
-      )}
       <div className="productList">
         {MERCHANT_CONFIG.items.map((product) => (
           <div key={product.id} className="product">
+            <img src={`/images/${product.name.toLowerCase()}.png`} alt={product.name} />
             <h3>{product.name}</h3>
-            <p>Price: ${product.price} USBD</p>
+            <p>${product.price} USBD</p>
             <label>
               <input
                 type="checkbox"

@@ -31,13 +31,17 @@ export const getEthersContract = async (publicClient: PublicClient, walletClient
 export const registerMerchant = async (
   publicClient: PublicClient,
   walletClient: WalletClient,
-  storefrontAddress: string,
+  address: string,
   chainId: number
 ) => {
   const contract = await getEthersContract(publicClient, walletClient, chainId);
-  const tx = await contract.registerMerchant(storefrontAddress);
-  await tx.wait();
-  await setMerchantAddress(storefrontAddress);
+  try {
+    const tx = await contract.registerMerchant(address);
+    await tx.wait();
+  } catch (error) {
+    console.error('Error in registerMerchant:', error);
+    throw error;
+  }
 };
 
 export const purchaseAndDeposit = async (

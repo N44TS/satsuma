@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi';
 import { getUserStake, getUserLoyaltyPoints, getUserPurchases, Purchase, getEthersContract, withdrawSavings } from '../utils/contractInteractions';
+import styles from '../styles/Home.module.css';
 
 const UserDashboard: React.FC = () => {
   const { address } = useAccount();
@@ -68,34 +69,45 @@ const UserDashboard: React.FC = () => {
   }, [publicClient, walletClient, address, chainId]);
 
   return (
-    <div>
-      <h2>User Dashboard</h2>
-      <p>Your stake: {stake} USBD</p>
-      <button onClick={handleWithdraw}>Withdraw Stake</button>
-      <p>Your loyalty points: {loyaltyPoints}</p>
-      <h3>Your Purchases</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Storefront</th>
-            <th>Amount</th>
-            <th>Savings</th>
-            <th>Block Number</th>
-            <th>Transaction Hash</th>
-          </tr>
-        </thead>
-        <tbody>
-          {purchases.map((purchase, index) => (
-            <tr key={index}>
-              <td>{purchase.storefront}</td>
-              <td>{purchase.amount} USBD</td>
-              <td>{purchase.savings} USBD</td>
-              <td>{purchase.blockNumber}</td>
-              <td>{purchase.transactionHash.slice(0, 10)}...</td>
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <h2 className={styles.title}>User Dashboard</h2>
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <h3>Your Savings</h3>
+            <p>{stake} USDB</p>
+          </div>
+          <div className={styles.card}>
+            <h3>Loyalty Points</h3>
+            <p>{loyaltyPoints} points</p>
+          </div>
+        </div>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Storefront</th>
+              <th>Amount</th>
+              <th>Savings</th>
+              <th>Block Number</th>
+              <th>Transaction Hash</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {purchases.map((purchase, index) => (
+              <tr key={index}>
+                <td>{purchase.storefront}</td>
+                <td>{purchase.amount} USDB</td>
+                <td>{purchase.savings} USDB</td>
+                <td>{purchase.blockNumber}</td>
+                <td>{purchase.transactionHash.slice(0, 10)}...</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button className={styles.button} onClick={handleWithdraw}>
+          Withdraw Savings
+        </button>
+      </main>
     </div>
   );
 };

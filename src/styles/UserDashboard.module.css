@@ -1,0 +1,142 @@
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .statsContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 2rem;
+  }
+  
+  .statCard {
+    background: linear-gradient(135deg, #ed7f17e9, #fbb76e);
+    border-radius: 15px;
+    text-align: center;
+    width: 48%;
+    color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .statCard h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .statValue {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .purchasesContainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .purchaseCard {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .purchaseCard:hover {
+    transform: translateY(-5px);
+  }
+  
+  .productInfo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .productImage {
+    margin-right: 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  .productName {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  
+  .purchaseDetails p {
+    margin: 0.5rem 0;
+  }
+  
+  .highlight {
+    font-weight: bold;
+    color: #4a90e2;
+  }
+  
+  .transactionHash {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #888;
+  }
+  
+  .withdrawButton {
+    margin: 1rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .withdrawButton:hover {
+    background-color: white;
+    color: #6e8efb;
+  }
+  
+  .purchasesTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .purchasesTable th,
+  .purchasesTable td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .purchasesTable th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+  }
+  
+  .purchaseRow:hover {
+    background-color: #f8f9fa;
+  }

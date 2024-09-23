@@ -6,6 +6,7 @@ import {
   distributeRewards, 
   setMerchantAddress 
 } from '../utils/contractInteractions';
+import styles from '../styles/Home.module.css';
 
 const MerchantDashboard: React.FC = () => {
   const { address } = useAccount();
@@ -13,6 +14,7 @@ const MerchantDashboard: React.FC = () => {
   const { data: walletClient } = useWalletClient();
   const chainId = useChainId();
   const [isRegistered, setIsRegistered] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false); 
 
   useEffect(() => {
     const checkRegistrationStatus = async () => {
@@ -33,6 +35,7 @@ const MerchantDashboard: React.FC = () => {
 
   const handleRegister = async () => {
     if (publicClient && walletClient && address && chainId) {
+      setIsRegistering(true); // Set loading state to true
       try {
         console.log('Registering merchant...');
         await registerMerchant(publicClient, walletClient, address, chainId);
@@ -41,7 +44,13 @@ const MerchantDashboard: React.FC = () => {
         alert('Merchant registered successfully!');
       } catch (error) {
         console.error('Registration failed:', error);
-        alert('Registration failed. Please try again.');
+        if (error instanceof Error) {
+          alert(`Registration failed: ${error.message}`);
+        } else {
+          alert('Registration failed. Please try again.');
+        }
+      } finally {
+        setIsRegistering(false); // Set loading state to false
       }
     }
   };
@@ -57,20 +66,26 @@ const MerchantDashboard: React.FC = () => {
     }
   };
 
-  if (!isRegistered) {
-    return (
-      <div>
-        <h2>Merchant Registration</h2>
-        <button onClick={handleRegister}>Register as Merchant</button>
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <h2>Merchant Dashboard</h2>
-      <p>You are registered as a merchant.</p>
-      <button onClick={handleDistributeRewards}>Distribute Rewards</button>
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <h2 className={styles.title}>Merchant Dashboard</h2>
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <h3>Registration Status</h3>
+            <p>{isRegistered ? 'Registered' : 'Not Registered'}</p>
+          </div>
+        </div>
+        {!isRegistered && (
+          <button 
+            className={styles.button} 
+            onClick={handleRegister}
+            disabled={isRegistering}
+          >
+            {isRegistering ? 'Registering...' : 'Register as Merchant'}
+          </button>
+        )}
+      </main>
     </div>
   );
 };

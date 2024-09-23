@@ -4,8 +4,11 @@ import styles from '../styles/Home.module.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
 import MockStorefront from '../components/MockStorefront';
+import { useAccount } from 'wagmi';
 
 const Home: NextPage = () => {
+  const { isConnected } = useAccount();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -14,15 +17,25 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <nav>
-        <ConnectButton />
-        <Link href="/merchant">Merchant Dashboard</Link>
-        <Link href="/user">User Dashboard</Link>
-      </nav>
+      <header>
+        <div>
+          <Link href="/" className="logo">Satsuma</Link>
+          <div className="tagline">buy to earn demo site.</div>
+        </div>
+        <nav>
+          <Link href="/">🍊</Link>
+          <Link href="/merchant">Merchant Account</Link>
+          {isConnected && <Link href="/user">My Account</Link>}
+        </nav>
+        <div className="icons">
+          <ConnectButton />
+        </div>
+      </header>
 
       <main className={styles.main}>
-        <h1>Welcome to Satsuma</h1>
-        <MockStorefront />
+        <div className="main-content">
+          <MockStorefront />
+        </div>
       </main>
     </div>
   );
