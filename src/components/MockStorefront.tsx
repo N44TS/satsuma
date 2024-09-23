@@ -5,6 +5,7 @@ import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi'
 import { purchaseAndDeposit, getMerchantAddress } from '../utils/contractInteractions';
 import { parseEther } from 'viem';
 import Image from 'next/image';
+import styles from '../styles/Home.module.css';
 
 const MockStorefront: React.FC = () => {
   const router = useRouter();
@@ -55,7 +56,14 @@ const MockStorefront: React.FC = () => {
   };
 
   return (
-    <div className="storefront">
+    <div className={styles.container}>
+      {isLoading && (
+        <div className="spinner-container">
+          <div className="spinner"></div>
+          <p className="spinner-text">{purchaseStatus}</p>
+        </div>
+      )}
+      {purchaseSuccess && <div className="successMessage">Purchase successful! Redirecting to dashboard...</div>}
       <div className="productList">
         {MERCHANT_CONFIG.items.map((product) => (
           <div key={product.id} className="product">

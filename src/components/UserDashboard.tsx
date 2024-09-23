@@ -85,20 +85,16 @@ const UserDashboard: React.FC = () => {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Storefront</th>
               <th>Amount</th>
               <th>Savings</th>
-              <th>Block Number</th>
               <th>Transaction Hash</th>
             </tr>
           </thead>
           <tbody>
             {purchases.map((purchase, index) => (
               <tr key={index}>
-                <td>{purchase.storefront}</td>
                 <td>{purchase.amount} USDB</td>
                 <td>{purchase.savings} USDB</td>
-                <td>{purchase.blockNumber}</td>
                 <td>{purchase.transactionHash.slice(0, 10)}...</td>
               </tr>
             ))}

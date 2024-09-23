@@ -6,8 +6,8 @@ import axios from 'axios';
 import { parseEther, parseUnits } from 'viem';
 
 const CONTRACT_ADDRESSES: { [key: number]: string } = {
-  11155111: '0xCF14fF742f461f9CD280b60a166cA66F243370b1', // Eth Sepolia
-  11155420: '0x7467FB9be95FD6032b08ea7171E552Ea469af51E' // OP Sepolia
+  11155111: '0x5C874F0F9738D43a8A60110A35A7c4cAEc987456', // Eth Sepolia
+  11155420: '0x4C7Ee35bb7C55D514d6A252E5032Ddf587727241' // OP Sepolia
 };
 
 const DEBT_TOKEN_ADDRESSES: { [key: number]: string } = {
@@ -16,7 +16,7 @@ const DEBT_TOKEN_ADDRESSES: { [key: number]: string } = {
 };
 
 const ABIS: { [key: number]: any } = {
-  11155111: contractABI,
+  11155111: OPcontractABI,
   11155420: OPcontractABI
 };
 
