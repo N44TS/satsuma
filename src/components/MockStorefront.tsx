@@ -43,9 +43,8 @@ const MockStorefront: React.FC = () => {
     setIsLoading(true);
     setShowCheckout(false);
     try {
-      setDetailedStatus('Initiating purchase...');
+      setDetailedStatus('Approving token spend...');
       console.log('Fetching merchant address...');
-      setDetailedStatus('Fetching merchant address...');
       const merchantAddress = await getMerchantAddress();
       console.log('Merchant address:', merchantAddress);
       if (!merchantAddress) {
@@ -53,7 +52,6 @@ const MockStorefront: React.FC = () => {
       }
 
       const amountInUSDC = BigInt(selectedProduct.price) * BigInt(1e18);
-      setDetailedStatus('Approving token spend...');
       const txHash = await purchaseAndDeposit(
         publicClient, 
         walletClient, 
@@ -61,7 +59,8 @@ const MockStorefront: React.FC = () => {
         savingsSelection[selectedProduct.id] || false, 
         merchantAddress, 
         chainId,
-        BigInt(loyaltyPointsToUse)
+        BigInt(loyaltyPointsToUse),
+        (status: string) => setDetailedStatus(status)
       );
       
       setDetailedStatus('Purchase completed');

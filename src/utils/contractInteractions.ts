@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import contractABI from './ABI/maincontract2.json';
+import contractABI from './ABI/oldethabi.json';
 import OPcontractABI from './ABI/OPabi.json';
 import { PublicClient, WalletClient } from 'viem';
 import axios from 'axios';
@@ -51,13 +51,15 @@ export const purchaseAndDeposit = async (
   savePercentage: boolean,
   merchantAddress: string,
   chainId: number,
-  loyaltyPointsToUse: bigint
+  loyaltyPointsToUse: bigint,
+  setStatus: (status: string) => void
 ) => {
   const contract = await getEthersContract(publicClient, walletClient, chainId);
   const signer = await getSigner(walletClient);
   
   try {
     console.log('Initiating purchase...');
+    setStatus('Approving token spend...');
 
     // Get the USBD token contract
     const usbdToken = new ethers.Contract(DEBT_TOKEN_ADDRESSES[chainId], [
@@ -76,6 +78,7 @@ export const purchaseAndDeposit = async (
       console.log('Token spend approved');
     }
 
+    setStatus('Purchase in progress...');
     const tx = await contract.purchaseAndDeposit(amount, savePercentage, merchantAddress, loyaltyPointsToUse);
     console.log('Transaction sent:', tx.hash);
     await tx.wait();

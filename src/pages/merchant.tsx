@@ -10,7 +10,7 @@ const MerchantPage: NextPage = () => {
       <header className={styles.header}>
         <div>
           <Link href="/" className="logo">Satsuma</Link>
-          <div className={styles.tagline}>buy to earn demo site.</div>
+          <div className={styles.tagline}>shop to earn demo site.</div>
         </div>
         <nav>
           <Link href="/">🍊</Link>

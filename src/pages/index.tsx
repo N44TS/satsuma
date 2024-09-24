@@ -20,7 +20,7 @@ const Home: NextPage = () => {
       <header>
         <div>
           <Link href="/" className="logo">Satsuma</Link>
-          <div className="tagline">buy to earn demo site.</div>
+          <div className="tagline">shop to earn demo site.</div>
         </div>
         <nav>
           <Link href="/">🍊</Link>
