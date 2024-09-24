@@ -1,12 +1,5 @@
 # 🍊 Satsuma: Shop to Earn.
 
-[Video demo (with audio!)](https://youtu.be/h5pN6LHVZtQ)
-
-[ETH Sepolia Contract](https://sepolia.etherscan.io/address/0x5C874F0F9738D43a8A60110A35A7c4cAEc987456)
-
-[OP Sepolia Contract](https://optimism-sepolia.blockscout.com/address/0x4C7Ee35bb7C55D514d6A252E5032Ddf587727241)
-
-
 **Accept USBD payments while generating rewards for both business and customer.**
 
 Bridging the gap between traditional commerce and crypto. Satsuma offers a way for merchants to accept payments in USBD while introducing a novel loyalty and savings model powered by BIMA (& DeFi). It transforms traditional loyalty programs by rewarding both the merchant and customer for shopping. 
@@ -15,6 +8,12 @@ Satsuma is a payment widget for ecommerce businesses to tap into the power of de
 With a focus on enabling merchants to accept USBD payments while providing an additional layer of value through savings and loyalty programs, it enables payment processing, savings, and loyalty reward generation.
 
 Defi meets ecommerce. Satsuma blends payments, discounts, savings, and loyalty programs. elevating everyday shopping into a DeFi-powered financial strategy.
+
+[Video demo (with audio!)](https://youtu.be/h5pN6LHVZtQ)
+
+[ETH Sepolia Contract](https://sepolia.etherscan.io/address/0x5C874F0F9738D43a8A60110A35A7c4cAEc987456)
+
+[OP Sepolia Contract](https://optimism-sepolia.blockscout.com/address/0x4C7Ee35bb7C55D514d6A252E5032Ddf587727241)
 
 ## Mutual Benefit: Rewarding Both Merchants and Customers
 
@@ -58,8 +57,20 @@ This unique approach encourages long-term customer engagement while providing fi
    - Leverages BIMA stability pool for yield generation
    - Showcases practical use case of BIMA in business and ecommerce operations.
 
+## Stack
 
-## Loyalty Scheme Explained
+- Frontend: Next.js, TypeScript
+- Web3: Ethers.js, Wagmi, RainbowKit
+- Backend: Node.js, Solidity
+
+## Getting Started
+
+Please make sure to be on either Eth Sepolia or Optimism Sepolia testnet, with some testnet USBD and eth in the wallet you connect to the site.
+
+*When testing the deployed demo site, please dont register a merchant, it will not work as a merchant has already been registered to that 'store'*
+
+
+## A novel Loyalty Scheme Explained
 
 A way to reward customers while generating value for merchants:
 
@@ -84,19 +95,6 @@ With a focus on user-friendly, intuitive interfaces for both customers and merch
  The customer dashboard provides a clear overview of savings, loyalty points, and withdrawal options.
  
 The merchant dashboard simplifies managing customer interactions and loyalty programs, minimizing friction and enhancing usability.
-
-## Stack
-
-- Frontend: Next.js, TypeScript
-- Web3: Ethers.js, Wagmi, RainbowKit
-- Backend: Node.js, Solidity
-
-## Getting Started
-
-When testing the deployed demo site, please dont register a merchant, it will not work as a merchant has alreayd been register to that 'store'.
-
-Please make sure to be on either Eth Sepolia or Optimism Sepolia testnet, with some testnet USBD and eth in the wallet you connect to the site.
-
 
 ## How Satsuma Enhances BIMA's Ecosystem
 
