@@ -4,7 +4,8 @@ import {
   registerMerchant, 
   getEthersContract, 
   distributeRewards, 
-  setMerchantAddress 
+  setMerchantAddress,
+  getTotalRewards
 } from '../utils/contractInteractions';
 import styles from '../styles/Home.module.css';
 
@@ -14,7 +15,8 @@ const MerchantDashboard: React.FC = () => {
   const { data: walletClient } = useWalletClient();
   const chainId = useChainId();
   const [isRegistered, setIsRegistered] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false); 
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [totalRewards, setTotalRewards] = useState('0');
 
   useEffect(() => {
     const checkRegistrationStatus = async () => {
@@ -27,6 +29,8 @@ const MerchantDashboard: React.FC = () => {
           // If registered on contract already, update server-side storage
           await setMerchantAddress(address);
           console.log('Updated server storage with registered merchant address:', address);
+          const rewards = await getTotalRewards(publicClient, walletClient, chainId);
+          setTotalRewards(rewards);
         }
       }
     };
@@ -56,12 +60,15 @@ const MerchantDashboard: React.FC = () => {
   };
 
   const handleDistributeRewards = async () => {
-    if (publicClient && walletClient && address && chainId) {
+    if (publicClient && walletClient && chainId) {
       try {
         await distributeRewards(publicClient, walletClient, chainId);
-        alert('Rewards distributed successfully!');
+        alert('Rewards claimed and distributed successfully!');
+        const rewards = await getTotalRewards(publicClient, walletClient, chainId);
+        setTotalRewards(rewards);
       } catch (error) {
-        console.error('Failed to distribute rewards:', error);
+        console.error('Failed to claim and distribute rewards:', error);
+        alert('Failed to claim and distribute rewards. Please try again.');
       }
     }
   };
@@ -75,6 +82,12 @@ const MerchantDashboard: React.FC = () => {
             <h3>Registration Status</h3>
             <p>{isRegistered ? 'Registered' : 'Not Registered'}</p>
           </div>
+          {isRegistered && (
+            <div className={styles.card}>
+              <h3>Total Rewards</h3>
+              <p>{totalRewards} USBD</p>
+            </div>
+          )}
         </div>
         {!isRegistered && (
           <button 
@@ -83,6 +96,14 @@ const MerchantDashboard: React.FC = () => {
             disabled={isRegistering}
           >
             {isRegistering ? 'Registering...' : 'Register as Merchant'}
+          </button>
+        )}
+        {isRegistered && (
+          <button 
+            className={styles.button} 
+            onClick={handleDistributeRewards}
+          >
+            Claim and Distribute Rewards
           </button>
         )}
       </main>

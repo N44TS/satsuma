@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi';
 import { getUserStake, getUserLoyaltyPoints, getUserPurchases, Purchase, getEthersContract, withdrawSavings } from '../utils/contractInteractions';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/UserDashboard.module.css';
+import Image from 'next/image';
 
 const UserDashboard: React.FC = () => {
   const { address } = useAccount();
@@ -71,18 +72,22 @@ const UserDashboard: React.FC = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <h2 className={styles.title}>User Dashboard</h2>
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <h3>Your Savings</h3>
-            <p>{stake} USBD</p>
+        <h1 className={styles.title}>User Dashboard</h1>
+        <div className={styles.statsContainer}>
+          <div className={styles.statCard}>
+            <h2>Your Savings</h2>
+            <p className={styles.statValue}>{stake} USBD</p>
+            <button className={styles.withdrawButton} onClick={handleWithdraw}>
+              Withdraw Savings
+            </button>
           </div>
-          <div className={styles.card}>
-            <h3>Loyalty Points</h3>
-            <p>{loyaltyPoints} points</p>
+          <div className={styles.statCard}>
+            <h2>Loyalty Points</h2>
+            <p className={styles.statValue}>{loyaltyPoints} points</p>
           </div>
         </div>
-        <table className={styles.table}>
+        <h2 className={styles.subtitle}>Previous Purchases</h2>
+        <table className={styles.purchasesTable}>
           <thead>
             <tr>
               <th>Amount</th>
@@ -92,17 +97,14 @@ const UserDashboard: React.FC = () => {
           </thead>
           <tbody>
             {purchases.map((purchase, index) => (
-              <tr key={index}>
-                <td>{purchase.amount} USBC</td>
+              <tr key={index} className={styles.purchaseRow}>
+                <td>{purchase.amount} USBD</td>
                 <td>{purchase.savings} USBD</td>
-                <td>{purchase.transactionHash.slice(0, 10)}...</td>
+                <td className={styles.transactionHash}>{purchase.transactionHash.slice(0, 10)}...</td>
               </tr>
             ))}
           </tbody>
         </table>
-        <button className={styles.button} onClick={handleWithdraw}>
-          Withdraw Savings
-        </button>
       </main>
     </div>
   );

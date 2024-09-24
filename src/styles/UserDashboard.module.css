@@ -32,17 +32,19 @@
   }
   
   .statCard {
-    background: linear-gradient(135deg, #ed7f17e9, #fbb76e);
+    background: linear-gradient(135deg, #f97902c2, #f67c02ac);
     border-radius: 15px;
     text-align: center;
     width: 48%;
     color: white;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); */
     transition: transform 0.3s ease;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .statCard h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-bottom: 1rem;
     font-weight: 600;
   }

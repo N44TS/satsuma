@@ -191,3 +191,13 @@ export const withdrawSavings = async (publicClient: any, walletClient: any, amou
   const tx = await contract.withdrawSavings(amountInTokenUnits);
   await tx.wait();
 };
+
+export const getTotalRewards = async (
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+  chainId: number
+): Promise<string> => {
+  const contract = await getEthersContract(publicClient, walletClient, chainId);
+  const totalRewards = await contract.totalRewards();
+  return ethers.formatUnits(totalRewards, 18); // Assuming 18 decimal places
+};
