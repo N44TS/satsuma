@@ -50,7 +50,8 @@ export const purchaseAndDeposit = async (
   amount: bigint,
   savePercentage: boolean,
   merchantAddress: string,
-  chainId: number
+  chainId: number,
+  loyaltyPointsToUse: bigint
 ) => {
   const contract = await getEthersContract(publicClient, walletClient, chainId);
   const signer = await getSigner(walletClient);
@@ -75,10 +76,11 @@ export const purchaseAndDeposit = async (
       console.log('Token spend approved');
     }
 
-    const tx = await contract.purchaseAndDeposit(amount, savePercentage, merchantAddress);
+    const tx = await contract.purchaseAndDeposit(amount, savePercentage, merchantAddress, loyaltyPointsToUse);
     console.log('Transaction sent:', tx.hash);
     await tx.wait();
     console.log('Purchase completed');
+    return tx.hash;
   } catch (error) {
     console.error('Purchase failed:', error);
     throw error;

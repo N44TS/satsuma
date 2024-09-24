@@ -75,7 +75,7 @@ const UserDashboard: React.FC = () => {
         <div className={styles.grid}>
           <div className={styles.card}>
             <h3>Your Savings</h3>
-            <p>{stake} USDB</p>
+            <p>{stake} USBD</p>
           </div>
           <div className={styles.card}>
             <h3>Loyalty Points</h3>
@@ -93,8 +93,8 @@ const UserDashboard: React.FC = () => {
           <tbody>
             {purchases.map((purchase, index) => (
               <tr key={index}>
-                <td>{purchase.amount} USDB</td>
-                <td>{purchase.savings} USDB</td>
+                <td>{purchase.amount} USBC</td>
+                <td>{purchase.savings} USBD</td>
                 <td>{purchase.transactionHash.slice(0, 10)}...</td>
               </tr>
             ))}
