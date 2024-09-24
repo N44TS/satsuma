@@ -1,5 +1,12 @@
 # 🍊 Satsuma: Shop to Earn.
 
+[Video demo (with audio!)](https://youtu.be/h5pN6LHVZtQ)
+
+[ETH Sepolia Contract](https://sepolia.etherscan.io/address/0x5C874F0F9738D43a8A60110A35A7c4cAEc987456)
+
+[OP Sepolia Contract](https://optimism-sepolia.blockscout.com/address/0x4C7Ee35bb7C55D514d6A252E5032Ddf587727241)
+
+
 **Accept USBD payments while generating rewards for both business and customer.**
 
 Bridging the gap between traditional commerce and crypto. Satsuma offers a way for merchants to accept payments in USBD while introducing a novel loyalty and savings model powered by BIMA (& DeFi). It transforms traditional loyalty programs by rewarding both the merchant and customer for shopping. 
@@ -86,7 +93,9 @@ The merchant dashboard simplifies managing customer interactions and loyalty pro
 
 ## Getting Started
 
-This is a [RainbowKit](https://rainbowkit.com) + [wagmi](https://wagmi.sh) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-rainbowkit`](/packages/create-rainbowkit).
+When testing the deployed demo site, please dont register a merchant, it will not work as a merchant has alreayd been register to that 'store'.
+
+Please make sure to be on either Eth Sepolia or Optimism Sepolia testnet, with some testnet USBD and eth in the wallet you connect to the site.
 
 
 ## How Satsuma Enhances BIMA's Ecosystem
